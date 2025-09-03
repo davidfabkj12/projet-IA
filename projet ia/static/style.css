@@ -1,0 +1,18 @@
+.faq {
+    background-color:var(--case-background);
+}
+.single-feature,
+.team {
+    background: var(--case-background) !important;
+}
+.single-faq,
+.features,
+.single-team{
+    background: var(--main-background) !important;
+}
+.section-title h2, h3{
+    color: #212b36;
+}
+.header ul{
+    align-items: center;
+}

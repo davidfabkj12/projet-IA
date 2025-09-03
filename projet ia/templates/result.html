@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultat de détection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      rel="shortcut icon"
+      href="static/images/blog/WhatsApp Image 2025-06-02 à 16.07.36_600fb315.jpg"
+      type="image/svg"
+    />
+    <style>
+        :root {
+            --primary-color: #0071e3;
+            --primary-hover: #0077ed;
+            --background: #f5f5f7;
+            --card-background: #ffffff;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --success-color: #34c759;
+            --warning-color: #ff9500;
+            --error-color: #ff3b30;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 620px;
+            padding: 2rem;
+            margin: 2rem auto;
+        }
+
+        .card {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2.5rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .result-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .result-icon.ai-generated {
+            background: linear-gradient(135deg, #ff3b30 0%, #ff9500 100%);
+        }
+
+        .result-icon.human-made {
+            background: linear-gradient(135deg, #34c759 0%, #5ac8fa 100%);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .image-container {
+            margin-bottom: 2rem;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            display: inline-block;
+        }
+
+        .image-container img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            max-height: 300px;
+        }
+
+        .result-label {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .confidence {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .confidence-bar-container {
+            height: 8px;
+            width: 100%;
+            max-width: 300px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            margin: 1rem auto 1.5rem;
+            overflow: hidden;
+        }
+
+        .confidence-bar {
+            height: 8px;
+            width: 100%;
+            max-width: 300px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            margin: 1rem auto 1.5rem;
+            overflow: hidden;
+        }
+
+        .button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 980px;
+            padding: 0.9rem 2.2rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            margin-top: 1rem;
+        }
+
+        .button:hover {
+            background-color: var(--primary-hover);
+            transform: scale(1.02);
+        }
+
+        .button i {
+            margin-right: 0.5rem;
+        }
+
+        footer {
+            margin-top: 2.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .card {
+                padding: 1.8rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .result-label {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            {% if label == "Générée par IA" %}
+            <div class="result-icon ai-generated">
+                <i class="fas fa-robot"></i>
+            </div>
+            {% else %}
+            <div class="result-icon human-made">
+                <i class="fas fa-camera"></i>
+            </div>
+            {% endif %}
+            
+            <h1>Résultat de l'analyse</h1>
+            
+            <div class="image-container">
+                <img src="{{ url_for('uploaded_file', filename=filename) }}" alt="Image analysée">
+            </div>
+            
+            <div class="result-label">
+                {% if label == "Générée par IA" %}
+                <i class="fas fa-robot" style="color: var(--error-color); margin-right: 10px;"></i>
+                {% else %}
+                <i class="fas fa-user" style="color: var(--success-color); margin-right: 10px;"></i>
+                {% endif %}
+                {{ label }}
+            </div>
+            
+           <div class="confidence">
+                Niveau de confiance: <span class="confidence-value" id="confidence-value">{{ confidence }}</span>%
+            </div>
+            
+            <div class="confidence-bar-container">
+                <div class="confidence-bar" id="confidence-bar" style="width: 0%; 
+                    {% if label == "Générée par IA" %}
+                    background: linear-gradient(to right, #ff3b30, #ff9500);
+                    {% else %}
+                    background: linear-gradient(to right, #34c759, #5ac8fa);
+                    {% endif %}">
+                </div>
+            </div>
+            
+            <a href="{{ url_for('index') }}" class="button">
+                <i class="fas fa-arrow-left"></i> Tester une autre image
+            </a>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const confidenceValue = document.getElementById('confidence-value');
+            const confidenceBar = document.getElementById('confidence-bar');
+            let confidence = parseFloat(confidenceValue.textContent);
+            if (isNaN(confidence)) {
+                confidence = 50;
+            } else {
+                confidence = Math.max(0, Math.min(100, confidence));
+            }
+            confidenceValue.textContent = confidence.toFixed(1);
+            setTimeout(function() {
+                confidenceBar.style.width = confidence + '%';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
