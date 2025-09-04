@@ -18,7 +18,7 @@ app.config['UPLOAD_FOLDER'] = os.path.abspath('static/uploads')
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-MODEL_PATH = os.environ.get('MODEL_PATH', 'best_model.h5')
+MODEL_PATH = os.environ.get('MODEL_PATH', 'final_model.h5')
 try:
     model = load_model(MODEL_PATH)
 except Exception as e:
@@ -52,6 +52,10 @@ def home():
 def root():
     return redirect(url_for('home'))
 
+@app.route('/back')
+def back_to_home():
+    return redirect(url_for('home'))
+
 
 
 @app.route('/detect', methods=['GET', 'POST'])
@@ -83,6 +87,7 @@ def index():
             flash('Allowed file types are png, jpg, jpeg')
             return redirect(request.url)
     return render_template('index.html')
+
 
 
 @app.route('/uploads/<filename>')
