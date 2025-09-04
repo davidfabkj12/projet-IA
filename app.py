@@ -18,7 +18,7 @@ app.config['UPLOAD_FOLDER'] = os.path.abspath('static/uploads')
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-MODEL_PATH = os.environ.get('MODEL_PATH', 'final_model.h5')
+MODEL_PATH = os.environ.get('MODEL_PATH', 'best_model.h5')
 try:
     model = load_model(MODEL_PATH)
 except Exception as e:
