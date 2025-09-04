@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Résultat de détection</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- ===== All CSS files ===== -->
+    <link rel="stylesheet" href="static/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="static/css/animate.css" />
+    <link rel="stylesheet" href="static/css/glightbox.min.css" />
+    <link rel="stylesheet" href="static/css/lineicons.css" />
+    <link rel="stylesheet" href="static/css/styles.css" />
+    <link rel="stylesheet" href="view/fontawesome-free-6.5.1-web/css/all.css">
+    <link rel="stylesheet" href="static/style.css">
     <link
       rel="shortcut icon"
       href="static/images/blog/WhatsApp Image 2025-06-02 à 16.07.36_600fb315.jpg"
@@ -29,23 +37,13 @@
         * {
             margin: 0;
             padding: 0;
+            -webkit-box-sizing: border-box;
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
-        body {
-            background-color: var(--background);
-            color: var(--text-primary);
-            line-height: 1.5;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
 
-        .container {
+        .container1 {
             width: 100%;
             max-width: 620px;
             padding: 2rem;
@@ -195,7 +193,38 @@
     </style>
 </head>
 <body>
-    <div class="container">
+     <!-- ====== Header Start ====== -->
+    <header class="header">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="navbar-wrapper">
+              <nav class="navbar navbar-expand-lg">
+                <a class="navbar-brand" href=""{{ url_for('back_to_home') }}"">
+                  
+                <button class="navbar-toggler">
+                  <span class="toggler-icon"> </span>
+                  <span class="toggler-icon"> </span>
+                  <span class="toggler-icon"> </span>
+                </button>
+
+                <div class="navbar-collapse">
+                  <ul id="nav" class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                      <a href="{{ url_for('back_to_home') }}">Acceuil</a>
+                    </li>
+                    <li class="nav-item changeTheme">
+                      <a><i class="fas fa-sun"></i></a>
+                    </li>
+                  </ul>
+                </div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="container1">
         <div class="card">
             {% if label == "Générée par IA" %}
             <div class="result-icon ai-generated">
@@ -241,6 +270,66 @@
             </a>
         </div>
     </div>
+        <!-- ====== Footer Start ====== -->
+    <footer class="footer wow fadeInUp" data-wow-delay=".15s">
+      <div class="footer-widgets">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-6">
+              <div class="widget">
+                <h5 class="widget-title">Info</h5>
+                <ul class="widget-links">
+                  <li>
+                    <a href="{{ url_for('back_to_home') }}">À propos</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+              <div class="widget">
+                <h5 class="widget-title">Projets</h5>
+                <ul class="widget-links">
+                  <li>
+                    <a href="{{ url_for('back_to_home') }}">Projets</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
+              <div class="widget">
+                <ul class="widget-socials">
+                  <li>
+                    <a href="https://www.facebook.com/share/19As3YRvzL/">
+                      <i class="lni lni-facebook-filled"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.instagram.com/david__fabz_?utm_source=qr&igsh=c3NrNHo5d3hhZWVp">
+                      <i class="lni lni-instagram-filled"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.linkedin.com/in/david-fabrizi-99b759353?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app">
+                      <i class="lni lni-linkedin-original"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/davidfabkj12">
+                      <i class="lni lni-github-original"></i>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="Model/js/change-theme.js"></script>
+    <script src="static/js/bootstrap.bundle.min.js"></script>
+    <script src="static/js/wow.min.js"></script>
+    <script src="static/js/glightbox.min.js"></script>
+    <script src="static/js/main.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const confidenceValue = document.getElementById('confidence-value');
