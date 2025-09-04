@@ -61,30 +61,57 @@ def back_to_home():
 @app.route('/detect', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
+        # Vérifier si un fichier a été uploadé
         if 'file' not in request.files:
-            flash('No file part')
+            flash('Aucun fichier sélectionné')
             return redirect(request.url)
         file = request.files['file']
+        
+        # Vérifier si le fichier a un nom
         if file.filename == '':
-            flash('No selected file')
+            flash('Aucun fichier sélectionné')
             return redirect(request.url)
+        
+        # Vérifier le type de fichier
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(file_path)
-            img_array = preprocess_image(file_path)
-            preds = model.predict(img_array)
-            predicted_class_idx = np.argmax(preds, axis=1)[0]
-            predicted_label = CLASSES[predicted_class_idx]
-            confidence = float(np.max(preds))
-            return render_template(
-                'result.html',
-                filename=filename,
-                label=predicted_label,
-                confidence=f"{confidence*100:.4f}"
-            )
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(filepath)
+            # Prétraiter l'image et faire une prédiction
+            try:
+                img_array = preprocess_image(filepath)
+                
+                # Vérifier si le modèle est chargé
+                if model is None:
+                    flash("Erreur: Modèle non chargé")
+                    return redirect(request.url)
+                
+                # Faire la prédiction
+                prediction = model.predict(img_array)[0][0]
+                
+                # Interpréter le résultat
+                if prediction > 0.5:
+                    label = "Générée par IA"
+                    confidence = prediction
+                else:
+                    label = "Authentique"
+                    confidence = 1 - prediction
+                
+                # Formater le résultat
+                confidence_percent = f"{confidence * 100:.2f}"
+                
+                return render_template(
+                    'result.html',
+                    filename=filename,
+                    label=label,
+                    confidence=confidence_percent
+                )
+                
+            except Exception as e:
+                flash(f"Erreur lors du traitement: {str(e)}")
+                return redirect(request.url)
         else:
-            flash('Allowed file types are png, jpg, jpeg')
+            flash('Types de fichier autorisés: png, jpg, jpeg')
             return redirect(request.url)
     return render_template('index.html')
 
